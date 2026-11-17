@@ -19,3 +19,14 @@ class Trial(Base):
 class Audit(Base):
     __tablename__='audit_logs'
     id=Column(Integer,primary_key=True);actor=Column(String(120),nullable=False);action=Column(String(160),nullable=False);created_at=Column(DateTime(timezone=True),default=lambda:datetime.now(timezone.utc))
+class RetentionTemplate(Base):
+    __tablename__='retention_templates'
+    id=Column(Integer,primary_key=True);code=Column(String(80),unique=True,nullable=False);title=Column(String(160),nullable=False)
+    space_quota_bytes=Column(Integer,nullable=False);write_size_bytes=Column(Integer,nullable=False)
+    initial_primary_position=Column(Integer,nullable=False,default=0);initial_segment_size=Column(Integer,nullable=False)
+    space_policy=Column(String(20),nullable=False);replicas=Column(JSON,nullable=False);events=Column(JSON,nullable=False);note=Column(String(300),default='')
+class RetentionDrill(Base):
+    __tablename__='retention_drills'
+    id=Column(Integer,primary_key=True);name=Column(String(120),nullable=False);retention_template_id=Column(Integer,ForeignKey('retention_templates.id'),nullable=False)
+    status=Column(String(20),nullable=False,default='completed');input_snapshot=Column(JSON,nullable=False);result=Column(JSON,nullable=True);error=Column(Text,nullable=True)
+    created_at=Column(DateTime(timezone=True),default=lambda:datetime.now(timezone.utc))

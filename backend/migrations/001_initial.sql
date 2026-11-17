@@ -1,3 +1,6 @@
 -- Initial schema is applied idempotently by SQLAlchemy metadata.create_all.
--- Authoritative entities: users, nodes, request_sets, trials, audit_logs.
+-- Authoritative entities: users, nodes, request_sets, trials, audit_logs,
+-- retention_templates, retention_drills.
 -- Routing request events and frozen input/result evidence are MySQL JSON.
+-- retention_templates.replicas/events 与 retention_drills.input_snapshot/result 同样为 JSON：
+-- 带大小日志段、副本追赶位点、清理任务删除台账与完成当时的逐段保留依据均随演练冻结留档。
